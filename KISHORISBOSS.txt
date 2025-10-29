@@ -1,0 +1,78 @@
+Cosmic Trading — DB & Hostinger Runbook (by KISHORISBOSS)
+
+1) Local (XAMPP) database
+- DB name: cosmictrd_complete
+- Host: localhost (127.0.0.1)
+- User: root
+- Password: (empty)
+- Import file used: D:\soft\XAMP\htdocs\admin-a\u966125597_cosmictrd.sql
+
+2) App configs (local)
+- admin (PHP backoffice): admin-a\app\config.php
+  DB_HOST=localhost
+  DB_NAME=cosmictrd_complete
+  DB_USER=root
+  DB_PASS=
+- customer/API: admin-a\public_html\api\config.php
+  DB_HOST=localhost
+  DB_NAME=cosmictrd_complete
+  DB_USER=root
+  DB_PASS=
+  ALLOWED_ORIGIN=http://localhost
+
+3) How the app uses the database
+- Admin pages in admin-a\app\*.php call db() from app\config.php (PDO MySQL, utf8mb4)
+- Public site calls API endpoints in public_html\api\*.php (same DB, separate config)
+- Key tables: admin_users, roles/permissions, teams, queries, orders, inbound_* , qc_* , deliveries, wallet_*
+- Sessions: PHP sessions for admin; Clerk JWT for customer endpoints (validated via CLERK_PEM_PUBLIC_KEY in api\config.php)
+
+4) Moving changes to Hostinger (production)
+- Files to upload (only what you changed):
+  /app (admin) and /public_html (customer + api)
+- Update production configs:
+  a) /app/config.php
+     DB_HOST=localhost (or hostinger internal)
+     DB_NAME=u966125597_cosmictrd
+     DB_USER=u966125597_admin
+     DB_PASS=<production password>
+  b) /public_html/api/config.php
+     DB_HOST=localhost
+     DB_NAME=u966125597_cosmictrd
+     DB_USER=u966125597_admin
+     DB_PASS=<production password>
+     ALLOWED_ORIGIN=https://cosmictrd.io
+- Permissions: ensure upload folders are writable (755/775)
+  /public_html/api/uploads
+  /public_html/public/uploads/payments
+- Optional: set DEV_MODE=false in /app/dev_switch_login.php to disable role switch in prod, or gate it by manage_admins.
+
+5) Using the live API with the local UI (optional dev mode)
+- Only if you must hit live API from localhost:
+  - Temporarily set ALLOWED_ORIGIN in production /public_html/api/config.php to include http://localhost
+  - Revert after testing
+- Safer approach: use the full local DB/API as configured above.
+
+6) Exporting and importing DB (backup/restore)
+- Export on Hostinger (phpMyAdmin): select u966125597_cosmictrd → Export (SQL)
+- Import to local: create DB cosmictrd_complete → Import the SQL
+- If you see errors about unknown collation (utf8mb4_uca1400_ai_ci), switch the target DB collation to utf8mb4_unicode_ci and re-run, or replace the collation strings in SQL before importing.
+
+7) Common errors & quick fixes
+- 404 on admin locally → update absolute links in app/layout.php, app/login.php, app/auth.php (done in this setup).
+- CORS blocked in dev → set ALLOWED_ORIGIN to http://localhost in api/config.php.
+- Table missing (e.g., queries) → verify import; create table or re-import.
+- Login needed for admin → use /app/dev_switch_login.php in dev; disable in prod.
+
+8) Test URLs
+- Local admin: http://localhost/admin-a/app/
+- Local customer: http://localhost/admin-a/public_html/
+- Dev switch: http://localhost/admin-a/app/dev_switch_login.php
+- Production admin: https://cosmictrd.io/app/
+- Production customer: https://cosmictrd.io/
+
+9) Security notes
+- Don’t commit production DB passwords.
+- In production, keep ALLOWED_ORIGIN strictly to https://cosmictrd.io.
+- Restrict dev_switch_login.php in production (DEV_MODE=false or permission gate).
+
+End of runbook — KISHORISBOSS rules.

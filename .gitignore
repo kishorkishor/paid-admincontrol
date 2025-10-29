@@ -1,0 +1,31 @@
+# Database files with sensitive data
+*.sql
+
+# PHP error logs
+*_php_errors.log
+_php_errors.log
+logs/
+
+# Configuration files (may contain credentials)
+config.php
+*/config.php
+
+# Uploaded files
+uploads/
+*/uploads/
+public/uploads/
+
+# Zip archives
+*.zip
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+

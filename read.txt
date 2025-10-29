@@ -1,0 +1,47 @@
+Cosmic Trading — UI/UX Workflow Document
+This workflow outlines the complete flow of operations across all roles and pages within the Cosmic
+Trading system.
+Admin and Customer Page Links
+Role/Page URL
+Customer Pages public_html/customer
+Sales Supervisor https://cosmictrd.io/app/supervisor.php
+Sales Agent https://cosmictrd.io/app/queries.php
+BD Supervisor https://cosmictrd.io/app/team_supervisor.php
+BD Agent https://cosmictrd.io/app/queries_team.php
+Direct Payments https://cosmictrd.io/app/accounts_payments_direct.php
+Shipment Payments https://cosmictrd.io/app/accounts_shipment_payments_direct.php
+Wallet Payments https://cosmictrd.io/app/accounts_payments_wallet.php
+Wallet https://cosmictrd.io/customer/wallet.php
+BD Order Supervisor https://cosmictrd.io/app/order_supervisor.php
+BD Order Agent https://cosmictrd.io/app/order_team_member.php
+Chinese Accounts https://cosmictrd.io/app/order_china_accounts.php
+Chinese Inbound https://cosmictrd.io/app/chinese_inbound.php
+QC Agent https://cosmictrd.io/app/qc.php
+QC Supervisor https://cosmictrd.io/app/qc_supervisor.php
+BD Inbound https://cosmictrd.io/app/bd_inbound.php
+BD Supervisor https://cosmictrd.io/app/bd_supervisor.php
+BD Delivery Supervisor https://cosmictrd.io/app/bd_delivery_supervisor.php
+BD Delivery Agent https://cosmictrd.io/app/bd_delivery_member.php
+Visual Workflow Diagram
+Detailed Workflow Steps
+1. **Customer Query:** A query is received from the customer through the customer portal. 2.
+**Sales Supervisor Review:** The query first goes to the Sales Supervisor who assigns it to a Sales
+Agent. 3. **Sales Agent Action:** The Sales Agent contacts the customer, collects all required
+details, and submits them. 4. **Sales Supervisor Approval:** The Sales Supervisor reviews the
+filled details and either approves or rejects the query. 5. **BD Supervisor Assignment:** Once
+approved, it moves to the BD Supervisor who assigns it to a BD Agent. 6. **BD Agent Pricing:** The
+BD Agent sources the product, determines the price, and submits it for BD Supervisor review. 7.
+**BD Supervisor Validation:** The BD Supervisor approves or rejects the price. Once approved, the
+price becomes visible to the customer. 8. **Customer Decision:** The customer can approve,
+reject, or negotiate the price, and then create an order. 9. **Payment Phase:** After full payment,
+the order goes to the BD Order Supervisor for approval. 10. **Order Placement:** The BD Order
+Agent places the order and sends it back to BD Order Supervisor for final approval. 11. **Chinese
+Accounts Review:** The order is then reviewed by Chinese Accounts for verification and payment
+confirmation. 12. **Chinese Inbound:** Marks the order as received, creates a packing list, and
+hands over to QC. 13. **Quality Control:** QC Agent performs quality check; QC Supervisor verifies
+and approves. 14. **Shipment:** Chinese Inbound ships the order to Bangladesh. 15. **BD
+Inbound:** Handles customs clearance and marks items as received, then records the weight. 16.
+**BD Supervisor Review:** Reviews the inbound carton and assigns a final delivery price. 17.
+**Customer Delivery Request:** Customer pays for the carton and requests delivery. 18. **BD
+Delivery Supervisor Approval:** Approves the delivery and sends OTP to the customer. 19. **BD
+Delivery Agent:** Receives OTP from the customer and marks the parcel as delivered.
