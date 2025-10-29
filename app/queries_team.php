@@ -67,20 +67,20 @@ ksort($statuses); ksort($types); ksort($teams);
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     :root{
-      --bg:#0b1020;            /* deep navy background for header strip */
-      --page:#f5f7fb;          /* page background */
+      --bg:#ff6b2c;            /* primary orange */
+      --page:#f8fafc;          /* page background */
       --card:#ffffff;
       --text:#0f172a;          /* slate-900 */
-      --muted:#6b7280;         /* gray-500 */
-      --line:#e5e7eb;          /* gray-200 */
-      --brand:#1d4ed8;         /* blue-700 */
-      --brand-600:#2563eb;
-      --success:#059669;       /* emerald-600 */
-      --warning:#b45309;       /* amber-700 */
-      --danger:#b91c1c;        /* red-700 */
-      --info:#0369a1;          /* sky-800 */
-      --purple:#6d28d9;        /* violet-700 */
-      --neutral:#475569;       /* slate-600 */
+      --muted:#64748b;         /* gray-500 */
+      --line:#e2e8f0;          /* gray-200 */
+      --brand:#ff6b2c;         /* orange brand */
+      --brand-600:#ff914b;
+      --success:#10b981;       /* emerald-600 */
+      --warning:#f59e0b;       /* amber-500 */
+      --danger:#ef4444;        /* red-500 */
+      --info:#3b82f6;          /* blue-500 */
+      --purple:#a855f7;        /* purple-500 */
+      --neutral:#64748b;       /* slate-500 */
     }
 
     *{box-sizing:border-box}
@@ -94,10 +94,11 @@ ksort($statuses); ksort($types); ksort($teams);
 
     /* Top bar */
     .topbar{
-      background:linear-gradient(90deg,var(--bg),#101736 60%,#131a3f);
+      background:linear-gradient(135deg,#ff6b2c 0%,#ff914b 50%,#ffb347 100%);
       color:#fff;
-      padding:14px 18px;
+      padding:18px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;
+      box-shadow:0 4px 20px rgba(255,107,44,0.25);
     }
     .brand{
       display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px
@@ -140,10 +141,12 @@ ksort($statuses); ksort($types); ksort($teams);
     }
     .input{flex:1 1 260px}
     .btn{
-      border:1px solid var(--brand);
-      background:var(--brand);
-      color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;
+      border:none;
+      background:linear-gradient(135deg,var(--brand),var(--brand-600));
+      color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer;
+      box-shadow:0 2px 8px rgba(255,107,44,0.25);transition:all 0.3s;font-weight:600;
     }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,107,44,0.35)}
     .btn.secondary{
       border-color:var(--line);background:#fff;color:var(--text)
     }
@@ -179,9 +182,11 @@ ksort($statuses); ksort($types); ksort($teams);
     .kicker{font-size:.85rem;color:var(--muted)}
     .actions-cell{display:flex;gap:8px;align-items:center}
     .link-btn{
-      text-decoration:none;display:inline-block;padding:8px 12px;border-radius:10px;
-      background:var(--brand);color:#fff;border:1px solid var(--brand-600)
+      text-decoration:none;display:inline-block;padding:8px 14px;border-radius:10px;
+      background:linear-gradient(135deg,var(--brand),var(--brand-600));color:#fff;border:none;
+      box-shadow:0 2px 8px rgba(255,107,44,0.25);transition:all 0.3s;font-weight:600;
     }
+    .link-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,107,44,0.35)}
     .sub{font-size:.85rem;color:var(--muted);margin-top:3px}
 
     /* Footer row */

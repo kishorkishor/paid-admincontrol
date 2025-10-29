@@ -79,11 +79,14 @@ body:has(.usr-root){background:#f8fafc !important}
 .usr-scroll{overflow-x:auto;border-radius:12px}
 .usr-perm-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
 .usr-perm-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px}
-.usr-perm-category{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f1f5f9}
-.usr-perm-category:last-of-type{border-bottom:none;padding-bottom:0}
-.usr-perm-category-title{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.usr-perm-category-title::before{content:'▸';color:var(--primary);font-size:14px}
-.usr-perm-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.usr-perm-category{margin-bottom:12px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
+.usr-perm-category-title{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#f8fafc;transition:all 0.2s;user-select:none}
+.usr-perm-category-title:hover{background:#f1f5f9;color:var(--primary)}
+.usr-perm-category-title::after{content:'▼';color:var(--primary);font-size:10px;transition:transform 0.3s}
+.usr-perm-category.collapsed .usr-perm-category-title::after{transform:rotate(-90deg)}
+.usr-perm-category-content{max-height:500px;overflow:hidden;transition:max-height 0.3s ease-out}
+.usr-perm-category.collapsed .usr-perm-category-content{max-height:0}
+.usr-perm-grid{display:flex;gap:10px;flex-wrap:wrap;padding:16px;background:#fff}
 .usr-checkbox-label{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;background:#fff}
 .usr-checkbox-label:hover{background:#f8fafc;border-color:var(--primary-light)}
 .usr-checkbox-label input[type="checkbox"]{width:16px;height:16px;cursor:pointer;accent-color:var(--primary)}
@@ -192,8 +195,9 @@ body:has(.usr-root){background:#f8fafc !important}
       <input type="hidden" name="rid" value="<?= (int)$r['id'] ?>">
       
       <?php foreach($grouped as $catName => $catPerms): ?>
-        <div class="usr-perm-category">
-          <div class="usr-perm-category-title"><?= htmlspecialchars($catName) ?></div>
+        <div class="usr-perm-category collapsed">
+          <div class="usr-perm-category-title" onclick="this.parentElement.classList.toggle('collapsed')"><?= htmlspecialchars($catName) ?></div>
+          <div class="usr-perm-category-content">
           <div class="usr-perm-grid">
             <?php foreach($catPerms as $p): ?>
               <label class="usr-checkbox-label">
@@ -201,6 +205,7 @@ body:has(.usr-root){background:#f8fafc !important}
                 <span><?= htmlspecialchars($p['label']) ?></span>
               </label>
             <?php endforeach; ?>
+          </div>
           </div>
         </div>
       <?php endforeach; ?>
