@@ -78,8 +78,12 @@ body:has(.usr-root){background:#f8fafc !important}
 .usr-select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,107,44,0.1)}
 .usr-scroll{overflow-x:auto;border-radius:12px}
 .usr-perm-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
-.usr-perm-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px}
-.usr-perm-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.usr-perm-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px}
+.usr-perm-category{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f1f5f9}
+.usr-perm-category:last-of-type{border-bottom:none;padding-bottom:0}
+.usr-perm-category-title{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.usr-perm-category-title::before{content:'▸';color:var(--primary);font-size:14px}
+.usr-perm-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .usr-checkbox-label{display:flex;align-items:center;gap:6px;border:1px solid #e2e8f0;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;background:#fff}
 .usr-checkbox-label:hover{background:#f8fafc;border-color:var(--primary-light)}
 .usr-checkbox-label input[type="checkbox"]{width:16px;height:16px;cursor:pointer;accent-color:var(--primary)}
@@ -153,18 +157,54 @@ body:has(.usr-root){background:#f8fafc !important}
     $rolePerms = db()->prepare("SELECT permission_id FROM role_permissions WHERE role_id=?");
     $rolePerms->execute([$r['id']]);
     $curr = array_column($rolePerms->fetchAll(),'permission_id');
+    
+    // Organize permissions by category
+    $categories = [
+      'Query Management' => ['view_queries', 'convert_query_to_order', 'change_status', 'assign_to_team_member'],
+      'Order Management' => ['view_orders', 'approve_reject_orders'],
+      'Team Management' => ['assign_to_a_team_member_(supervisor)', 'approve_reject_forwarding_to_other_teams', 'view_team_performance_metrics'],
+      'Admin Functions' => ['create_update_ledger', 'create_admins_&_set_roles/permissions', 'view_supervisor_notifications_panel'],
+      'Country Team' => ['access_country_team_dashboard', 'submit_price_quote', 'approve/reject_price_quote'],
+      'Chinese Inbound' => ['access_chinese_inbound_dashboard', 'create_packing_list_(chinese_inbound)', 'update_inbound_order_status', 'forward_to_qc_team'],
+      'QC Operations' => ['access_qc_dashboard', 'access_qc_supervisor_dashboard', 'qc_member:_mark_qc_done_&_upload_photos', 'qc_supervisor:_approve_qc'],
+      'Order Processing' => ['mark_order_as_shipped', 'mark_order_as_custom_cleared', 'mark_custom_cleared'],
+      'BD Operations' => ['handoff_to_bd_inbound_team', 'bangladesh_inbound_access', 'mark_bangladesh_received', 'bangladesh_inbound_supervisor'],
+    ];
+    
+    // Group permissions
+    $grouped = [];
+    foreach($perms as $p) {
+      $found = false;
+      foreach($categories as $catName => $catPerms) {
+        if (in_array($p['label'], $catPerms)) {
+          $grouped[$catName][] = $p;
+          $found = true;
+          break;
+        }
+      }
+      if (!$found) {
+        $grouped['Other'][] = $p;
+      }
+    }
   ?>
     <form method="post" class="usr-perm-card">
       <div class="usr-perm-title">🔐 <?= htmlspecialchars($r['label']) ?></div>
       <input type="hidden" name="rid" value="<?= (int)$r['id'] ?>">
-      <div class="usr-perm-grid">
-        <?php foreach($perms as $p): ?>
-          <label class="usr-checkbox-label">
-            <input type="checkbox" name="perms[]" value="<?= (int)$p['id'] ?>" <?= in_array($p['id'],$curr)?'checked':'' ?>>
-            <span><?= htmlspecialchars($p['label']) ?></span>
-          </label>
-        <?php endforeach; ?>
-      </div>
+      
+      <?php foreach($grouped as $catName => $catPerms): ?>
+        <div class="usr-perm-category">
+          <div class="usr-perm-category-title"><?= htmlspecialchars($catName) ?></div>
+          <div class="usr-perm-grid">
+            <?php foreach($catPerms as $p): ?>
+              <label class="usr-checkbox-label">
+                <input type="checkbox" name="perms[]" value="<?= (int)$p['id'] ?>" <?= in_array($p['id'],$curr)?'checked':'' ?>>
+                <span><?= htmlspecialchars($p['label']) ?></span>
+              </label>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+      
       <button class="usr-btn" name="perms_set" value="1">Save Permissions</button>
     </form>
   <?php endforeach; ?>
