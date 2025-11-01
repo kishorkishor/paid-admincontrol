@@ -161,7 +161,7 @@ This is a private/paid admin control panel. All rights reserved.
 
 **Kishor Kishor**
 - GitHub: [@kishorkishor](https://github.com/kishorkishor)
-- Email: kishor@cosmictrd.com
+- Email: kishortarafder@gmail.com
 
 ## 🙏 Acknowledgments
 
